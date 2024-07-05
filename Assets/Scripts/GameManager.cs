@@ -35,6 +35,10 @@ public class GameManager : MonoBehaviour
     private void SpawnPlayerOnTheGrid()
     {
         var player = Instantiate(playerPrefab, grid[0][0].transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity);
+        var neighbhous = DI.di.gridGenerator.GetNeighbors(grid[0][0]);
+        var adj = neighbhous[Random.Range(0, neighbhous.Count)];
+        var enemy = Instantiate(enemyPrefab, adj.transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity);
+        enemy.SetInitialCoordinates(adj.gridX, adj.gridY);
     }
 
     private void OnDestroy() => UnsubscribeEvents();

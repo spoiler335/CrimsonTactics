@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridGenerator : MonoBehaviour
+public partial class GridGenerator : MonoBehaviour
 {
     [SerializeField] private SingleTile cube;
     [SerializeField] private Material blue;
@@ -60,7 +60,6 @@ public class GridGenerator : MonoBehaviour
     {
         grid[x][y].ShowObstacleSpehre();
     }
-
 
     private void OnDestroy()
     {
