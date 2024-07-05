@@ -1,18 +1,21 @@
-using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class GridGenerator : MonoBehaviour
 {
     [SerializeField] private SingleTile cube;
+    [SerializeField] private Material blue;
+    [SerializeField] private Material green;
 
-    private float gap = 1f;
+    private float gap = 0f;
 
-    private List<List<SingleTile>> grid = new List<List<SingleTile>>();
+    public List<List<SingleTile>> grid { get; private set; } = new List<List<SingleTile>>();
 
     private void Awake()
     {
+        if (DI.di.gridGenerator == null)
+            DI.di.SetGridGenerator(this);
+
         SubscribeEvents();
     }
 
@@ -35,14 +38,18 @@ public class GridGenerator : MonoBehaviour
     {
         for (int i = 0; i < 10; ++i)
         {
+            grid.Add(new List<SingleTile>());
             for (int j = 0; j < 10; ++j)
             {
                 Vector3 position = new Vector3(i * (1 + gap), 0.1f, j * (1 + gap));
-                position = position - new Vector3(8.5f, 0, 8.5f);
+                // position = position - new Vector3(8.5f, 0, 8.5f);
                 var c = Instantiate(cube, position, Quaternion.identity, transform);
                 c.SetTileInfo(i, j);
                 c.gameObject.name = $"Tile_{i}_{j}";
-                grid.Add(new List<SingleTile>());
+                if ((i + j) % 2 == 0)
+                    c.GetComponent<Renderer>().material = blue;
+                else
+                    c.GetComponent<Renderer>().material = green;
                 grid[i].Add(c);
             }
         }

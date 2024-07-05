@@ -19,10 +19,9 @@ public class ObstacleManager : MonoBehaviour
             for (int j = 0; j < 10; j++)
             {
                 int corrIdx = i * 10 + j;
-                Debug.Log($"Obstacle {obstacleData.obstables[corrIdx]}");
                 if (obstacleData.obstables[corrIdx])
                 {
-                    Debug.Log($"Placing obstacle at {i}, {j}");
+                    Debug.Log($"Placing obstacle at ({i},{j})");
                     EventsModel.SET_OBSTACLE?.Invoke(i, j);
                 }
             }

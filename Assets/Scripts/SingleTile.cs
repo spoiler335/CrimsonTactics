@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SingleTile : MonoBehaviour
@@ -12,12 +13,30 @@ public class SingleTile : MonoBehaviour
 
     public bool isObstacle { get; private set; } = false;
 
+    private bool isPlayerMovementInProgress = false;
 
     private void Awake()
     {
         coordinateText.gameObject.SetActive(false);
         obstacleSphere.SetActive(false);
+        SubscribeEvets();
     }
+    private void SubscribeEvets()
+    {
+        EventsModel.PLAYER_MOVEMNT_STARTED += OnPlayerMovementStarted;
+        EventsModel.PLAYER_MOVEMNT_COMPLETED += OnPlayerMovementCompleted;
+    }
+
+    private void UnsubscribeEvents()
+    {
+        EventsModel.PLAYER_MOVEMNT_STARTED -= OnPlayerMovementStarted;
+        EventsModel.PLAYER_MOVEMNT_COMPLETED -= OnPlayerMovementCompleted;
+    }
+
+
+    private void OnPlayerMovementStarted() => isPlayerMovementInProgress = true;
+    private void OnPlayerMovementCompleted() => isPlayerMovementInProgress = false;
+
     public void SetTileInfo(int x, int y)
     {
         gridX = x;
@@ -43,9 +62,18 @@ public class SingleTile : MonoBehaviour
         ShowTileInfo();
     }
 
+    private void OnMouseDown()
+    {
+        if (isPlayerMovementInProgress) return;
+        if (isObstacle) return;
+        EventsModel.TILE_CLICKED?.Invoke(gridX, gridY);
+    }
+
     public void ShowObstacleSpehre()
     {
         obstacleSphere.SetActive(true);
         isObstacle = true;
     }
+
+    private void OnDestroy() => UnsubscribeEvents();
 }
