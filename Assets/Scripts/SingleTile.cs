@@ -1,17 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class SingleTile : MonoBehaviour
 {
     [SerializeField] private TextMeshPro coordinateText;
+    [SerializeField] private GameObject obstacleSphere;
 
     public int gridX { get; private set; } = -1;
     public int gridY { get; private set; } = -1;
 
+    public bool isObstacle { get; private set; } = false;
 
-    private void Awake() => coordinateText.gameObject.SetActive(false);
+
+    private void Awake()
+    {
+        coordinateText.gameObject.SetActive(false);
+        obstacleSphere.SetActive(false);
+    }
     public void SetTileInfo(int x, int y)
     {
         gridX = x;
@@ -34,7 +40,12 @@ public class SingleTile : MonoBehaviour
     private void OnMouseOver()
     {
         if (gridX < 0 || gridY < 0) return;
-
         ShowTileInfo();
+    }
+
+    public void ShowObstacleSpehre()
+    {
+        obstacleSphere.SetActive(true);
+        isObstacle = true;
     }
 }
