@@ -34,7 +34,7 @@ public class SingleTile : MonoBehaviour
     }
 
 
-    private void OnPlayerMovementStarted() => isPlayerMovementInProgress = true;
+    private void OnPlayerMovementStarted(int x, int y) => isPlayerMovementInProgress = true;
     private void OnPlayerMovementCompleted() => isPlayerMovementInProgress = false;
 
     public void SetTileInfo(int x, int y)

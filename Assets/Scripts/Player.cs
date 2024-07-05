@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
         }
         Debug.Log($"path is \n {s}");
         ////////////////////////////////////////////////////////////////
-        EventsModel.PLAYER_MOVEMNT_STARTED?.Invoke();
+        EventsModel.PLAYER_MOVEMNT_STARTED?.Invoke(x, y);
         StartCoroutine(MoveToardsTarget(path));
     }
 
