@@ -1,12 +1,12 @@
 
-public class DI
+public class DI // Depadency Injector class to hold the Singleton References
 {
     public readonly static DI di = new DI();
 
     private DI() { }
 
-    public GridGenerator gridGenerator { get; private set; }
+    public GridManager gridManager { get; private set; }
 
-    public void SetGridGenerator(GridGenerator gridGenerator) => this.gridGenerator = gridGenerator;
+    public void SetGridGenerator(GridManager gridGenerator) => this.gridManager = gridGenerator;
 
 }

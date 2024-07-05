@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class GridGenerator : MonoBehaviour
+public partial class GridManager : MonoBehaviour // This class is responsible for Generating the grid 
 {
     [SerializeField] private SingleTile cube;
     [SerializeField] private Material blue;
@@ -13,7 +13,7 @@ public partial class GridGenerator : MonoBehaviour
 
     private void Awake()
     {
-        if (DI.di.gridGenerator == null)
+        if (DI.di.gridManager == null)
             DI.di.SetGridGenerator(this);
 
         SubscribeEvents();

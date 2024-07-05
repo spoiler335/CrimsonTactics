@@ -1,13 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private GridGenerator grdimanager => DI.di.gridGenerator;
-    private List<List<SingleTile>> grid => grdimanager.grid;
+    private GridManager grdiManager => DI.di.gridManager;
+    private List<List<SingleTile>> grid => grdiManager.grid;
 
     private float moveSpeed = 5f;
 
@@ -20,8 +18,6 @@ public class Player : MonoBehaviour
     {
         currX = 0;
         currY = 0;
-
-        Debug.Log($"Grid Dimentions are ({grid.Count},{grid[0].Count})");
     }
 
     private void SubscribeEvents()
@@ -34,7 +30,7 @@ public class Player : MonoBehaviour
         EventsModel.TILE_CLICKED -= OnTileClicked;
     }
 
-    private void OnTileClicked(int x, int y)
+    private void OnTileClicked(int x, int y) // when a tile is clicked the player check if it can rach the target and then movers towars the target
     {
         Debug.Log($"Tile clicked {x} {y}");
         if (x == currX && y == currY)
@@ -44,7 +40,7 @@ public class Player : MonoBehaviour
         }
         SingleTile start = grid[currX][currY];
         SingleTile end = grid[x][y];
-        var path = DI.di.gridGenerator.FindPath(start, end);
+        var path = grdiManager.FindPath(start, end);
         if (path.Count == 0)
         {
             Debug.Log($"Cannot Reach ({x},{y})");
@@ -64,7 +60,7 @@ public class Player : MonoBehaviour
         StartCoroutine(MoveToardsTarget(path));
     }
 
-    private IEnumerator MoveToardsTarget(List<SingleTile> path)
+    private IEnumerator MoveToardsTarget(List<SingleTile> path) // To MoveToards the target and thwrow and Event when reached the target
     {
         foreach (SingleTile tile in path)
         {
@@ -76,7 +72,7 @@ public class Player : MonoBehaviour
         EventsModel.PLAYER_MOVEMNT_COMPLETED?.Invoke();
     }
 
-    private IEnumerator MoveToPosition(Vector3 target)
+    private IEnumerator MoveToPosition(Vector3 target) // move towards the tile
     {
         while ((transform.position - target).sqrMagnitude > 0.01f)
         {

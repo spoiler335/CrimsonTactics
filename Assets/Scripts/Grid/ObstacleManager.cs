@@ -1,7 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class ObstacleManager : MonoBehaviour
+public class ObstacleManager : MonoBehaviour // This class reads the data for the obstacle from the Scriptable object and sets the obstacles accordingly
 {
 
     [SerializeField] private ObstacleData obstacleData;
@@ -13,7 +12,6 @@ public class ObstacleManager : MonoBehaviour
 
     private void GenerateObstacles()
     {
-        // Debug.Log($"Starting to generate obstacles {obstacleData.obstables.GetLength(0)}  ");
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)

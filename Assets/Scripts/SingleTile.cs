@@ -1,6 +1,5 @@
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SingleTile : MonoBehaviour
@@ -35,7 +34,13 @@ public class SingleTile : MonoBehaviour
 
 
     private void OnPlayerMovementStarted(int x, int y) => isPlayerMovementInProgress = true;
-    private void OnPlayerMovementCompleted() => isPlayerMovementInProgress = false;
+    private void OnPlayerMovementCompleted() => StartCoroutine(WaitAndRemovePlayerMovementInProgress());
+
+    private IEnumerator WaitAndRemovePlayerMovementInProgress()
+    {
+        yield return new WaitForEndOfFrame();
+        isPlayerMovementInProgress = false;
+    }
 
     public void SetTileInfo(int x, int y)
     {
@@ -65,7 +70,7 @@ public class SingleTile : MonoBehaviour
     private void OnMouseDown()
     {
         if (isPlayerMovementInProgress) return;
-        if (isObstacle) return;
+        if (isObstacle) return; // to prevent clicks on tile that is an obstacle
         EventsModel.TILE_CLICKED?.Invoke(gridX, gridY);
     }
 

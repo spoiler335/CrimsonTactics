@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class GridGenerator
+public partial class GridManager
 {
-    public List<SingleTile> GetNeighbors(SingleTile currentTile)
+    public List<SingleTile> GetNeighbors(SingleTile currentTile) // returns a list of tiles that are adjacent to the current tile and are not obstacles
     {
         List<SingleTile> neighbors = new List<SingleTile>();
         for (int i = -1; i <= 1; i++)
@@ -24,11 +24,12 @@ public partial class GridGenerator
         return neighbors;
     }
 
-    private float GetDistance(SingleTile x, SingleTile y)
-    {
-        return Mathf.Sqrt(Mathf.Pow(x.gridX - y.gridX, 2) + Mathf.Pow(x.gridY - y.gridY, 2));
-    }
-
+    /*
+      - returns the list of tiles whihc froms a path between the current tile and the target tile
+      - We store the tiles whcih the player was previously on in the dictionary
+      - We add the tile to the Queue which are non obstacle neighbors and not present in the dictionary
+      - Then we add the tiles form dictionary to a list whcih would be the reverse order so before we return the path we reverse it Again.
+    */
     public List<SingleTile> FindPath(SingleTile start, SingleTile end)
     {
 
@@ -66,6 +67,6 @@ public partial class GridGenerator
         return path;
     }
 
-    
+
 
 }

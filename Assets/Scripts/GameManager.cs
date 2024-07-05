@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Player playerPrefab;
     [SerializeField] private Enemy enemyPrefab;
 
-    private List<List<SingleTile>> grid => DI.di.gridGenerator.grid;
+    private List<List<SingleTile>> grid => DI.di.gridManager.grid;
 
     private void Awake()
     {
@@ -32,13 +32,13 @@ public class GameManager : MonoBehaviour
         SpawnPlayerOnTheGrid();
     }
 
-    private void SpawnPlayerOnTheGrid()
+    private void SpawnPlayerOnTheGrid() // After the Grid id Generated we spawn the player on the origin and we pick a randon neighbour of the player and spawn the enemy there.
     {
         var player = Instantiate(playerPrefab, grid[0][0].transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity);
-        var neighbhous = DI.di.gridGenerator.GetNeighbors(grid[0][0]);
+        var neighbhous = DI.di.gridManager.GetNeighbors(grid[0][0]);
         var adj = neighbhous[Random.Range(0, neighbhous.Count)];
         var enemy = Instantiate(enemyPrefab, adj.transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity);
-        enemy.SetInitialCoordinates(adj.gridX, adj.gridY);
+        enemy.SetInitialCoordinates(adj.gridX, adj.gridY); // set initial coordinates for enemy
     }
 
     private void OnDestroy() => UnsubscribeEvents();

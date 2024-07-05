@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IAI
 {
-    private List<List<SingleTile>> grid => DI.di.gridGenerator.grid;
+    private List<List<SingleTile>> grid => DI.di.gridManager.grid;
     private int currX = -1;
     private int currY = -1;
 
@@ -12,22 +12,23 @@ public class Enemy : MonoBehaviour, IAI
 
     private void SubscribeEvents()
     {
-        EventsModel.TILE_CLICKED += MoveTowardsPlayer;
+        EventsModel.PLAYER_MOVEMNT_STARTED += MoveTowardsPlayer;
     }
 
     private void UnsubscribeEvents()
     {
-        EventsModel.TILE_CLICKED -= MoveTowardsPlayer;
+        EventsModel.PLAYER_MOVEMNT_STARTED -= MoveTowardsPlayer;
     }
 
 
-    public void MoveTowardsPlayer(int x, int y)
+    public void MoveTowardsPlayer(int x, int y) // When the player starts the Movement the Enemy will follow the player 
     {
+        StopAllCoroutines();
         SingleTile playerTarget = grid[x][y];
-        var playerNeighbors = DI.di.gridGenerator.GetNeighbors(playerTarget);
+        var playerNeighbors = DI.di.gridManager.GetNeighbors(playerTarget);
         SingleTile myTarget = playerNeighbors[Random.Range(0, playerNeighbors.Count)];
         SingleTile currentTile = grid[currX][currY];
-        var path = DI.di.gridGenerator.FindPath(currentTile, myTarget);
+        var path = DI.di.gridManager.FindPath(currentTile, myTarget);
         StartCoroutine(MoveToardsTarget(path));
     }
 
@@ -36,11 +37,10 @@ public class Enemy : MonoBehaviour, IAI
         foreach (SingleTile tile in path)
         {
             yield return StartCoroutine(MoveToPosition(new Vector3(tile.transform.position.x, transform.position.y, tile.transform.position.z)));
+            currX = tile.gridX;
+            currY = tile.gridY;
         }
-        currX = path[path.Count - 1].gridX;
-        currY = path[path.Count - 1].gridY;
         Debug.Log($"Player moved to ({currX},{currY})");
-        EventsModel.PLAYER_MOVEMNT_COMPLETED?.Invoke();
     }
 
     private IEnumerator MoveToPosition(Vector3 target)
