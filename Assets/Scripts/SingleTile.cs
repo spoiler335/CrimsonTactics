@@ -34,7 +34,7 @@ public class SingleTile : MonoBehaviour
 
 
     private void OnPlayerMovementStarted(int x, int y) => isPlayerMovementInProgress = true;
-    private void OnPlayerMovementCompleted() => StartCoroutine(WaitAndRemovePlayerMovementInProgress());
+    private void OnPlayerMovementCompleted(int x, int y) => StartCoroutine(WaitAndRemovePlayerMovementInProgress());
 
     private IEnumerator WaitAndRemovePlayerMovementInProgress()
     {

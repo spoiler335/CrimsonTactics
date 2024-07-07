@@ -41,11 +41,6 @@ public class Player : MonoBehaviour
         SingleTile start = grid[currX][currY];
         SingleTile end = grid[x][y];
         var path = grdiManager.FindPath(start, end);
-        if (path.Count == 0)
-        {
-            Debug.Log($"Cannot Reach ({x},{y})");
-            return;
-        }
 
         ////////////////////////////////////////////////////////////////
         ///For Debug
@@ -69,7 +64,7 @@ public class Player : MonoBehaviour
         currX = path[path.Count - 1].gridX;
         currY = path[path.Count - 1].gridY;
         Debug.Log($"Player moved to ({currX},{currY})");
-        EventsModel.PLAYER_MOVEMNT_COMPLETED?.Invoke();
+        EventsModel.PLAYER_MOVEMNT_COMPLETED?.Invoke(currX, currY);
     }
 
     private IEnumerator MoveToPosition(Vector3 target) // move towards the tile

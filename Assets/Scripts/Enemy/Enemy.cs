@@ -12,16 +12,16 @@ public class Enemy : MonoBehaviour, IAI
 
     private void SubscribeEvents()
     {
-        EventsModel.PLAYER_MOVEMNT_STARTED += MoveTowardsPlayer;
+        EventsModel.PLAYER_MOVEMNT_COMPLETED += MoveTowardsPlayer;
     }
 
     private void UnsubscribeEvents()
     {
-        EventsModel.PLAYER_MOVEMNT_STARTED -= MoveTowardsPlayer;
+        EventsModel.PLAYER_MOVEMNT_COMPLETED -= MoveTowardsPlayer;
     }
 
 
-    public void MoveTowardsPlayer(int x, int y) // When the player starts the Movement the Enemy will follow the player 
+    public void MoveTowardsPlayer(int x, int y) // When the player reaches the target position, the enemy starts moving towards the Player
     {
         StopAllCoroutines();
         SingleTile playerTarget = grid[x][y];
